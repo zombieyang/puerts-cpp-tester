@@ -9,7 +9,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 14)
 set(PuertsDirectory ${PROJECT_SOURCE_DIR}/..)
-set (CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Debug)
 add_subdirectory(${PuertsDirectory} puerts)
 
 set(V8_ENGINE ${PuertsDirectory}/${JS_ENGINE})
@@ -38,7 +38,11 @@ include_directories(
     ${PuertsDirectory}/../../unreal/Puerts/Source/JsEnv/Private
 )
 
-
 add_executable(PuertsPluginTest main.cc)
+
+if ( JS_ENGINE STREQUAL "quickjs")
+    target_compile_definitions (PuertsPluginTest PRIVATE WITHOUT_INSPECTOR)
+    target_compile_definitions (PuertsPluginTest PRIVATE WITH_QUICKJS)
+endif ()
 
 target_link_libraries(PuertsPluginTest PUBLIC puerts)
